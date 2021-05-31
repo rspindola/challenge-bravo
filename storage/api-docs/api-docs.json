@@ -1,0 +1,89 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Hurb - Desafio Bravo",
+        "contact": {
+            "name": "Support Team",
+            "email": "rspindola@live.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/currencies": {
+            "get": {
+                "summary": "Converte a moeda de acordo com os parâmetros passados",
+                "operationId": "App\\Http\\Controllers\\CurrencyController::convertCurrency",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "Dados do formulário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "description": "Dados do formulário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Dados do formulário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o valor total da conversão",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Retorna o erro da operação."
+                    }
+                }
+            },
+            "post": {
+                "summary": "Adiciona uma moeda no banco",
+                "operationId": "App\\Http\\Controllers\\CurrencyController::addCurrency",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "in": "path",
+                        "description": "Dados do formulário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o valor total da conversão",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error: Retorna o erro da operação."
+                    }
+                }
+            }
+        }
+    }
+}
