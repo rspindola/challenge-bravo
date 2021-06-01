@@ -244,7 +244,7 @@ DELETE /currencies/{currency}
 
 ## Teste de Estresse
 
-<img src="./stress-test.jpg" alt="stress test" />
+<img src="./stress-test.png" alt="stress test" />
 
 <a name="details"></a>
 
