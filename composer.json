@@ -43,7 +43,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "start": "php -S localhost:8000 -t public",
-        "test": "vendor/bin/phpunit --do-not-cache-result",
+        "tests": "vendor/bin/phpunit --do-not-cache-result",
         "migrate": "php artisan migrate --seed",
         "docker": "cp -n .env.example .env && docker-compose up -d"
     }
