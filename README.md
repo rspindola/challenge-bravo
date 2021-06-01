@@ -211,7 +211,6 @@ Os arquivos mencionados foram os que eu criei ou manipulei no framework:
 ## Endpoints
 
 ```
-(doc)GET / (HTML)
 POST /login
 GET /currencies
 POST /currencies
