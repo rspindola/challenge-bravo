@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DOCKER=1
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./docker-compose/apache2/vhost.conf:/etc/apache2/sites-available/000-default.conf

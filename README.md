@@ -4,6 +4,7 @@
 
 -   [Sobre](#about)
 -   [Requisitos](#requirements)
+-   [Docker Setup](#docker-setup)
 -   [Setup](#setup)
 -   [Funcionamento](#work)
     -   [Converter Moeda](#work-currency-convert)
@@ -42,6 +43,28 @@ A API deve, originalmente, converter entre as seguintes moedas:
 -   Mbstring PHP Extension
 -   [composer](https://getcomposer.org/doc/00-intro.md)
 -   [docker-compose](https://docs.docker.com/compose/install) (caso use container)
+
+<a name="docker-setup"></a>
+
+## Docker Setup
+
+Configure o arquivo .env seguindo as configurações do .env.example (para funcionar, basta copiar e colar o conteúdo).
+
+Suba o container:
+
+```sh
+composer docker
+```
+
+Instale as dependências e gere o banco inicial:
+
+```sh
+docker-compose run webserver composer install && composer migrate
+```
+
+Configure o arquivo .env com base no .env.example (opcional).
+
+A aplicação estará disponível no endereço: http://localhost:8000.
 
 <a name="setup"></a>
 

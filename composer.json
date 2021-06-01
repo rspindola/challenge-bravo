@@ -7,7 +7,6 @@
             "email": "rspindola@live.com"
         }
     ],
-    "type": "project",
     "require": {
         "php": "^7.3|^8.0",
         "darkaonline/swagger-lume": "8.*",
@@ -45,7 +44,7 @@
         ],
         "start": "php -S localhost:8000 -t public",
         "test": "vendor/bin/phpunit --do-not-cache-result",
-        "migrate": "php database/migrations/create_currencies_table.php && php database/seeds/currencies_seed.php",
+        "migrate": "php artisan migrate --seed",
         "docker": "cp -n .env.example .env && docker-compose up -d"
     }
 }
