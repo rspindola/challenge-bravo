@@ -44,7 +44,7 @@
         ],
         "start": "php -S localhost:8000 -t public",
         "tests": "vendor/bin/phpunit --do-not-cache-result",
-        "migrate": "php artisan migrate --seed",
+        "migrate": "php artisan migrate --seed && php artisan passport:install",
         "docker": "cp -n .env.example .env && docker-compose up -d"
     }
 }
