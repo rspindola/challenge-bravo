@@ -21,7 +21,7 @@ class CurrencyController extends Controller
     public function __construct(CurrencyRepository $repository)
     {
         $this->repository = $repository;
-        // $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['convertCurrency']]);
     }
 
     /**

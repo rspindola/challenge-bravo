@@ -113,7 +113,7 @@ Requisição para realizar a conversão entre 2 moedas:
 -   **amount**: Valor da moeda de origem que será convertido.
 
 ```sh
-curl 'http://localhost:8000/currencies?from=BTC&to=EUR&amount=123.45'
+curl 'http://localhost:8000/api/currencies?from=BTC&to=EUR&amount=123.45'
 ```
 
 <a name="work-login"></a>
@@ -128,7 +128,7 @@ Requisição para obter um token de acesso que permite usar as rotas para adicio
 <sub>OBS.: Se alguma dessas informações for mudada no .env, será necessário mudar na requisição também.</sub>
 
 ```sh
-curl 'http://localhost:8000/login' -d 'email=admin@hurbchallenge.com&password=secret123'
+curl 'http://localhost:8000/api/auth/login' -d 'email=admin@hurbchallenge.com&password=secret123'
 ```
 
 <a name="work-currency-add"></a>
@@ -142,7 +142,7 @@ Requisição para adicionar moeda:
 -   **{token}**: Token gerado no endpoint /login.
 
 ```sh
-curl 'http://localhost:8000/currencies' -X 'POST' -d 'currency=CAD&usd_value=1.26' -H 'Authorization: Bearer {token}'
+curl 'http://localhost:8000/api/currencies' -X 'POST' -d 'currency=CAD&usd_value=1.26' -H 'Authorization: Bearer {token}'
 ```
 
 <a name="work-currency-remove"></a>
@@ -155,7 +155,7 @@ Requisição para remover moeda:
 -   **{token}**: Token gerado no endpoint /login.
 
 ```sh
-curl 'http://localhost:8000/currencies/{currency}' -X 'DELETE' -H 'Authorization: Bearer {token}'
+curl 'http://localhost:8000/api/currencies/{currency}' -X 'DELETE' -H 'Authorization: Bearer {token}'
 ```
 
 <a name="composer-commands"></a>
@@ -250,6 +250,6 @@ DELETE /currencies/{currency}
 
 ## Informações adicionais
 
-#### O sistema de autenticação está usando JWT (Json Web Token), os tokens são gerados na rota /login.
+#### O sistema de autenticação está usando JWT (Json Web Token), os tokens são gerados na rota /api/auth/login.
 
 ---
