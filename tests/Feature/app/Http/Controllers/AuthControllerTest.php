@@ -25,11 +25,10 @@ class AuthControllerTest extends TestCase
     }
 
     /**
-     * A basic test example.
+     * Teste nao enviando credenciais.
      *
      * @return void
      */
-
     public function testUserShouldBeDeniedIfNotSendCredentials()
     {
         $request = $this->post(route('authenticate'));
@@ -37,6 +36,11 @@ class AuthControllerTest extends TestCase
     }
 
 
+    /**
+     * Teste enviando usuario nao registrado
+     *
+     * @return void
+     */
     public function testUserShouldBeDeniedIfNotRegistered()
     {
         $payload = [
@@ -49,6 +53,11 @@ class AuthControllerTest extends TestCase
         $request->seeJson(['errors' => ['main' => 'Wrong credentials']]);
     }
 
+    /**
+     * Teste enviando senha incorreta.
+     *
+     * @return void
+     */
     public function testUserShouldSendWrongPassword()
     {
         $user = User::factory()->create();
@@ -62,6 +71,11 @@ class AuthControllerTest extends TestCase
         $request->seeJson(['errors' => ['main' => 'Wrong credentials']]);
     }
 
+    /**
+     * Teste enviando dados corretos.
+     *
+     * @return void
+     */
     public function testUserCanAuthenticate()
     {
         $this->artisan('passport:install');
