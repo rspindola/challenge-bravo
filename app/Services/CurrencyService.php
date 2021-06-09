@@ -42,21 +42,17 @@ class CurrencyService
      * @param array $data
      * @return array
      */
-    public static function validateConvertFields(?array $data, $availableCurrencies)
+    public static function validateConvertFields(?array $data)
     {
         $errors = [];
 
         if (!isset($data['from'])) {
             $errors[] = 'O campo "from" é obrigatório.';
-        } else if (!in_array($data['from'], $availableCurrencies)) {
-            $errors[] = 'A moeda ' . $data['from'] . ' não é suportada.';
         }
 
         // Validação do campo to
         if (!isset($data['to'])) {
             $errors[] = 'O campo "to" é obrigatório.';
-        } else if (!in_array($data['to'], $availableCurrencies)) {
-            $errors[] = 'A moeda ' . $data['to'] . ' não é suportada.';
         }
 
         // Validação do campo amount
@@ -89,6 +85,19 @@ class CurrencyService
         }
 
         return $errors;
+    }
+
+    public function convertRates($currencies, $amount)
+    {
+        // Organizando em variaveis os valores
+        $usdFromValue = $currencies[0]->usd_value;
+        $usdToValue = $currencies[1]->usd_value;
+
+        // Obtendo total da conversão
+        $total = ($usdToValue / $usdFromValue) * $amount;
+
+        // retornando
+        return $total;
     }
 
     /**

@@ -67,34 +67,22 @@ class CurrencyController extends Controller
      */
     public function convertCurrency(Request $request): JsonResponse
     {
-        // Obtendo os query params
-        $data = $request->query();
+        try {
+            // Obtendo os query params
+            $data = $request->query();
 
-        // Obtendo as cotações no repositório
-        $currencies = $this->repository->getCurrencyToFromConvert($data);
+            // Obtendo as cotações a serem convertidas no repositório
+            $currencies = $this->repository->getCurrencyToFromConvert($data);
 
-        // Transformando as cotações em um array que eu possa buscar pelo simbolo da cotação
-        $currencies = array_reduce($currencies, function ($result, $currency) {
-            $result[$currency->name] = $currency->usd_value;
-            return $result;
-        });
+            // convertendo as cotacoes
+            $result = $this->service->convertRates($currencies, $data['amount']);
 
-        // Validando dados
-        $errors = CurrencyService::validateConvertFields($data, array_keys($currencies));
-
-        if (!empty($errors)) {
-            return response()->json(['errors' => $errors], 422);
+            // retornando
+            return response()->json(['success' => ['total' => $result]], 200);
+        } catch (Exception $exception) {
+            // retornando erro
+            return response()->json(['errors' => ['main' => json_decode($exception->getMessage())]], $exception->getCode());
         }
-
-        // Organizando em variaveis os valores
-        $usdFromValue = $currencies[$data['from']];
-        $usdToValue = $currencies[$data['to']];
-
-        // Obtendo total da conversão
-        $total = ($usdToValue / $usdFromValue) * $data['amount'];
-
-        // retornando
-        return response()->json(['success' => ['total' => $total]], 200);
     }
 
     /**
@@ -167,6 +155,13 @@ class CurrencyController extends Controller
 
         $result = $this->service->getExchangeApiRates();
         $rates = (json_decode($result['content'], true))['rates'];
+
+        foreach ($currencies as $currency) {
+            dd($currency);
+            $currencySymbol = $currency->getCurrency();
+            $currency->setUsdValue($rates[$currencySymbol]);
+            // $this->repository->updateCurrency($currency);
+        }
 
         dd($rates);
     }

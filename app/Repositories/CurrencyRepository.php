@@ -27,12 +27,25 @@ class CurrencyRepository
      */
     public function getCurrencyToFromConvert($data): array
     {
+        // Verificando os dados enviado
+        $errors = CurrencyService::validateConvertFields($data);
+        if (!empty($errors)) {
+            throw new Exception(json_encode($errors), 422);
+        }
+
+        // Buscando no banco os valores das moedas
         $currencies = DB::table('currencies')
             ->where('name', '=', $data['to'])
             ->orWhere('name', '=', $data['from'])
-            ->get();
+            ->get()->toArray();
 
-        return $currencies->toArray();
+        // Validando dados
+        if (!array_key_exists(1, $currencies)) {
+            throw new Exception(json_encode(['errors' => 'Verifique os códigos das moedas na conversão']), 400);
+        }
+
+        // Retornando as cotações
+        return $currencies;
     }
 
     /**
