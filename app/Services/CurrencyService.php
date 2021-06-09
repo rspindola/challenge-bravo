@@ -2,8 +2,39 @@
 
 namespace App\Services;
 
+use GuzzleHttp\Client;
+use Exception;
+
 class CurrencyService
 {
+    /**
+     * GuzzleHttp\Client Instance
+     *
+     * @var Client
+     */
+    private $client;
+
+    /**
+     * Chave da API
+     *
+     * @var string
+     */
+    private $appKey;
+
+    /**
+     * Constructor
+     */
+    function __construct()
+    {
+        $baseUrl = env('API_URL');
+        $this->appKey = env('API_KEY');
+
+        // Configurando cliente
+        $this->client = new Client([
+            'base_uri' => $baseUrl,
+            'timeout'  => 3.0
+        ]);
+    }
 
     /**
      * Faz a validação dos campos passados para converter uma moeda
@@ -58,5 +89,28 @@ class CurrencyService
         }
 
         return $errors;
+    }
+
+    /**
+     * Obtém as taxas de câmbio mais recentes (usando como base o USD)
+     *
+     * @return array
+     */
+    public function getExchangeApiRates(): array
+    {
+        try {
+            $response = $this->client->request('GET', 'latest', ['query' => [
+                'apikey' => $this->appKey
+            ]]);
+        } catch (\Exception $e) {
+            print_r($e);
+            throw new Exception(json_encode(['message' => 'Erro na requisão']), 400);
+        }
+
+        return [
+            'status' => !isset($e),
+            'code' => isset($e) ? $e->getCode() : $response->getStatusCode(),
+            'content' => isset($e) ? $e->getMessage() : (string)$response->getBody()
+        ];
     }
 }

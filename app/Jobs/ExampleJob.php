@@ -2,8 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Repositories\CurrencyRepository;
+use App\Services\CurrencyService;
+
 class ExampleJob extends Job
 {
+
     /**
      * Create a new job instance.
      *
@@ -11,7 +15,10 @@ class ExampleJob extends Job
      */
     public function __construct()
     {
-        //
+        $currencyService = new CurrencyService();
+        $currencyRepository = new CurrencyRepository();
+
+        $response = $currencyService->getExchangeApiRates();
     }
 
     /**

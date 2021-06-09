@@ -18,10 +18,11 @@ class CurrencyController extends Controller
      * @return void
      *
      */
-    public function __construct(CurrencyRepository $repository)
+    public function __construct(CurrencyRepository $repository, CurrencyService $service)
     {
         $this->repository = $repository;
-        $this->middleware('auth', ['except' => ['convertCurrency']]);
+        $this->service = $service;
+        // $this->middleware('auth', ['except' => ['convertCurrency']]);
     }
 
     /**
@@ -66,15 +67,15 @@ class CurrencyController extends Controller
      */
     public function convertCurrency(Request $request): JsonResponse
     {
-        // Obtendo as cotações no repositório
-        $currencies = $this->repository->getCurrencies();
-
         // Obtendo os query params
         $data = $request->query();
 
+        // Obtendo as cotações no repositório
+        $currencies = $this->repository->getCurrencyToFromConvert($data);
+
         // Transformando as cotações em um array que eu possa buscar pelo simbolo da cotação
         $currencies = array_reduce($currencies, function ($result, $currency) {
-            $result[$currency['name']] = $currency['usd_value'];
+            $result[$currency->name] = $currency->usd_value;
             return $result;
         });
 
@@ -158,5 +159,15 @@ class CurrencyController extends Controller
             // retornando erro
             return response()->json(['errors' => ['main' => $exception->getMessage()]], $exception->getCode());
         }
+    }
+
+    public function updateTaxas()
+    {
+        $currencies = $this->repository->getCurrencies();
+
+        $result = $this->service->getExchangeApiRates();
+        $rates = (json_decode($result['content'], true))['rates'];
+
+        dd($rates);
     }
 }

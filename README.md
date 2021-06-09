@@ -87,7 +87,7 @@ nano .env
 Rode as migrations e seeds:
 
 ```sh
-composer migrate --seed
+composer migrate
 ```
 
 Inicie a aplicação:
@@ -137,7 +137,7 @@ curl 'http://localhost:8000/api/auth/login' -d 'email=admin@hurbchallenge.com&pa
 
 Requisição para adicionar moeda:
 
--   **currency**: Moeda a ser adicionada.
+-   **name**: Moeda a ser adicionada.
 -   **usd_value**: Valor da moeda equivalente a 1 dólar americano (USD).
 -   **{token}**: Token gerado no endpoint /login.
 

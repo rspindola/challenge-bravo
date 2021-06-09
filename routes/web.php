@@ -16,9 +16,15 @@
 /**
  * Documentação da API
  */
-$router->get('/', function () use ($router) {
-    return "Api Hurb - Challenge Bravo";
-});
+// $router->get('/', function () use ($router) {
+//     return "Api Hurb - Challenge Bravo";
+// });
+
+$router->get(
+    '/',
+    ['as' => 'update', 'uses' => 'CurrencyController@updateTaxas']
+);
+
 
 // API route group
 $router->group(['prefix' => 'api'], function () use ($router) {

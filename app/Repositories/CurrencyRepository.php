@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Currency;
 use App\Services\CurrencyService;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class CurrencyRepository
 {
@@ -16,6 +17,21 @@ class CurrencyRepository
     public function getCurrencies(): array
     {
         $currencies = Currency::all();
+        return $currencies->toArray();
+    }
+
+    /**
+     * Obtém as moedas cadastradas no banco de dados pelo código para conversão
+     *
+     * @return array
+     */
+    public function getCurrencyToFromConvert($data): array
+    {
+        $currencies = DB::table('currencies')
+            ->where('name', '=', $data['to'])
+            ->orWhere('name', '=', $data['from'])
+            ->get();
+
         return $currencies->toArray();
     }
 
@@ -42,6 +58,26 @@ class CurrencyRepository
         Currency::create($data);
 
         return ['success' => ['message' => 'A moeda foi adicionada com sucesso!']];
+    }
+
+    /**
+     * Atualiza a moeda no banco de dados
+     *
+     * @param Currency $currency
+     * @return bool
+     */
+    public function updateCurrency(array $data, Currency $currency): array
+    {
+        $exists = $this->verifyCurrencyExists($currency);
+
+        if (!$exists) {
+            throw new Exception(json_encode(['message' => 'O código da moeda não está registrado!']), 400);
+        }
+
+        $currency = Currency::where('name', $currency)->first();
+        $currency->update($data);
+
+        return ['success' => ['message' => 'A moeda foi alterada com sucesso!']];
     }
 
     /**
